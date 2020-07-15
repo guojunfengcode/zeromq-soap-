@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="TestSoapService"
+	targetNamespace="http://localhost/TestSoapService/v1"
+	xmlns:typens="http://localhost/TestSoapService/v1"
+	xmlns:myxsd="http://localhost/TestSoapService/schema"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			attributeFormDefault="qualified" elementFormDefault="qualified"
+			targetNamespace="http://localhost/TestSoapService/schema">
+
+			<xsd:element name="SampleTestReq">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element type="xsd:integer" minOccurs="1" maxOccurs="1" name="Id"/>
+						<xsd:element type="xsd:string" minOccurs="1" maxOccurs="1" name="InfoName"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="SampleTestRes">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element type="xsd:string" minOccurs="1" maxOccurs="1" name="Id"/>
+						<xsd:element type="xsd:string" minOccurs="0" maxOccurs="1" name="InfoData"/> 
+						<xsd:element type="xsd:integer" minOccurs="0" maxOccurs="1" name="Description"/>
+						<xsd:element name="resultCode" type="xsd:integer" minOccurs="1" maxOccurs="1"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="SampleTestRequsetMsg">
+		<wsdl:part name="body" element="myxsd:SampleTestReq"/>
+	</wsdl:message>
+	<wsdl:message name="SampleTestResponseMsg">
+		<wsdl:part name="body" element="myxsd:SampleTestRes"/>
+	</wsdl:message>
+
+	<wsdl:portType name="TestSoapServicePort">
+		<wsdl:operation name="SampleTest">
+			<wsdl:input name="SampleTestInput" message="typens:SampleTestRequsetMsg"/>
+			<wsdl:output name="SampleTestOutput" message="typens:SampleTestResponseMsg"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="TestSoapServiceBind" 
+		type="typens:TestSoapServicePort">
+		<wsdlsoap:binding style="document" 
+			transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="SampleTest">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="SampleTestInput">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="SampleTestOutput">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="TestSoapService">
+		<wsdl:port name="TestSoapServicePort" 
+		    binding="typens:TestSoapServiceBind">
+		    <wsdlsoap:address 
+			location="https://localhost:54321/services/TestSoapService"/>		
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
